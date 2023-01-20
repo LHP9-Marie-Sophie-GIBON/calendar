@@ -7,19 +7,19 @@
         },
         {
             "date": "2023-05-12",
-            "name": "Pôle emploi",
+            "name": "Travail",
             "hour": "10h00",
             "location":"Pôle emploi"
         },
         {
-            "date": "2023-04-10",
-            "name": "Examen",
-            "hour": "08h00",
-            "location":"Université"
+            "date": "2023-04-14",
+            "name": "Formation",
+            "hour": "17h00",
+            "location":"La Manu"
         },
         {
             "date": "2023-01-02",
-            "name": "rencard",
+            "name": "Rencard",
             "hour": "17h00",
             "location":"Cinéma"
         },

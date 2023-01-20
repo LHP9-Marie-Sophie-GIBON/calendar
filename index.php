@@ -92,6 +92,14 @@ require('calendar.php');
                 };
                 ?>
             </div>
+            <div class="card-footer row justify-content-center">
+                <div class="col-sm-2 publicholiday pt-3">
+                    Jours fériés
+                </div>
+                <div class="col-sm-2 vacances rounded pt-2">
+                    Vacances scolaires
+                </div>
+            </div>
         </div>
 
     </div>
