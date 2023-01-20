@@ -2,6 +2,7 @@
 // fonction pour afficher le calendrier
 function showCalendar($month, $year)
 {
+    
     // récupérer les données du json birthdays 
     $birthdays = file_get_contents('data/birthday.json');
     $birthdays = json_decode($birthdays, true);
@@ -15,15 +16,23 @@ function showCalendar($month, $year)
         }
         
     };
-    var_dump($birthdaysInMonths);
-
 
     // récupérer less données du json appointment
-    $appointment = file_get_contents('data/appointment.json');
-    $appointment = json_decode($appointment, true);
-    // afficher les données du json appointment
-    foreach ($appointment as $key => $value) {
-        $aday[] = $value["date"];
+    $appointments= file_get_contents('data/appointment.json');
+    $appointments= json_decode($appointments, true);
+
+    $appointmentsInMonths = [];
+    foreach ($appointments as $appointment) {
+        $aday = explode ('-',$appointment["date"]);
+
+        if ($aday[0] == $year && $aday[1] == $month ) {
+            $appointmentsInMonths[intval($aday[2])] = [
+                "name" => $appointment['name'],
+                "hour" => $appointment['hour'],
+                "location" => $appointment['location']
+            ];
+            }
+            
     };
 
 
@@ -71,7 +80,8 @@ function showCalendar($month, $year)
         }
         // afficher les jrs du mois
         echo '<td class="';
-        // afficher jour courant
+
+        // afficher le jour courant
         if (date('d-M-Y', mktime(0, 0, 0, $month, $i, $year)) == date('d-M-Y')) {
             echo 'fw-bold text-info';
         }
@@ -83,26 +93,16 @@ function showCalendar($month, $year)
         echo '"><div class="d-flex justify-content-end"> ';
   
         // afficher les anniversaire
-        // if (array_key_exists($i, $birthdaysInMonths)) {
-        //     echo "<td data-bs-toggle='modal' data-bs-target='#$birthdaysInMonths[$i]' class='orange'>$i - $birthdaysInMonths[$i]</td>";
-        //     // $fulldate = $i . ' ' . $months[$month - 1] . ' ' . $year;
-        //     // createBirthdayModals($birthdaysInMonths[$i], $fulldate, $birthdayDate);
-        // }
-        // if (in_array(date('m-d', mktime(0, 0, 0, $month, $i, $year)), $bday)) {
-
-        //     ';
-
-        // vérifier si le jour du mois correspond a $birthdaysInMonths
         if (array_key_exists($i,$birthdaysInMonths)) {
-            echo '<button class="btn" data-bs-toggle="modal" data-bs-target="#' . $birthdaysInMonths[$i] . '"><img src="https://img.icons8.com/ios-filled/16/000000/birthday-cake.png"/></button>';
+            echo '<button class="btn" data-bs-toggle="modal" data-bs-target="#' . $birthdaysInMonths[$i] . '"><img src="https://img.icons8.com/tiny-color/16/null/packaging.png"/></button>';
+            showBirthdays($birthdaysInMonths[$i]);
         }
 
 
-        // }
         // afficher les rendez-vous
-        if (in_array(date('Y-m-d', mktime(0, 0, 0, $month, $i, $year)), $aday)) {
-            echo '<button class="btn" data-bs-toggle="modal" data-bs-target="#' . $value["name"] . '"><img src="https://img.icons8.com/tiny-color/16/null/calendar-plus.png"/></button>';
-            // showAppointment($value, $month, $year);
+        if (array_key_exists($i,$appointmentsInMonths)) {
+            echo '<button class="btn" data-bs-toggle="modal" data-bs-target="#' . $appointmentsInMonths[$i]['name'] . '"><img src="https://img.icons8.com/tiny-color/16/null/calendar-plus.png"/></button>';
+            showAppointment($appointmentsInMonths[$i]['name'], $appointmentsInMonths[$i]['hour'], $appointmentsInMonths[$i]['location']);
         }
         echo '</div>' . $i . '</td>';
 
@@ -122,10 +122,10 @@ function showCalendar($month, $year)
     
 }
 
-// fonction affichant $birthdays $value['name'] et ['date'] dans une modal au click de l'icone
-function showBirthdays($i, $birthdaysInMonths)
+// fonction affichant $birthdays $appointment['name'] et ['date'] dans une modal au click de l'icone
+function showBirthdays($name)
 {
-    echo '<div class="modal fade" id="'.$birthdaysInMonths[$i].'" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    echo '<div class="modal fade" id="'.$name.'" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -133,7 +133,7 @@ function showBirthdays($i, $birthdaysInMonths)
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <p>' .$birthdaysInMonths[$i]. ' fête son anniversaire aujourd\'hui !</p>
+                        <p>' .$name. ' fête son anniversaire aujourd\'hui !</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
@@ -143,25 +143,25 @@ function showBirthdays($i, $birthdaysInMonths)
         </div>';
 }
 
-// fonction affichant $appointment $value['name'] et ['date'] dans une modal au click de l'icone
-// function showAppointment($value, $month, $year)
-// {
-//     echo '<div class="modal fade" id="' . $value['name'] . '" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-//             <div class="modal-dialog">
-//                 <div class="modal-content">
-//                     <div class="modal-header">
-//                         <h3 class="modal-title" id="exampleModalLabel"><img src="https://img.icons8.com/tiny-color/16/null/calendar-plus.png"/>Rendez-vous</h3>
-//                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-//                     </div>
-//                     <div class="modal-body">
-//                         <p>Vous avez un rendez vous aujourd\'hui : ' . $value['name'] . '</p>
-//                         <p>Heure : ' . $value['hour'] . '</p>
-//                         <p>Lieu : ' . $value['location'] . '</p>
-//                     </div>
-//                     <div class="modal-footer">
-//                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-//                     </div>
-//                 </div>
-//             </div>
-//         </div>';
-// }
+// fonction affichant $appointments$appointment['name'] et ['date'] dans une modal au click de l'icone
+function showAppointment($name, $hour, $location)
+{
+    echo '<div class="modal fade" id="' . $name. '" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="exampleModalLabel"><img src="https://img.icons8.com/tiny-color/16/null/calendar-plus.png"/>Rendez-vous</h3>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Vous avez un rendez vous aujourd\'hui : ' . $name . '</p>
+                        <p>Heure : ' . $hour . '</p>
+                        <p>Lieu : ' . $location . '</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                    </div>
+                </div>
+            </div>
+        </div>';
+}
