@@ -40,7 +40,7 @@ select#month, select#year, input {
     border: 10px;
 
     font-weight: bolder;
-    font-size: large;
+    font-size: larger;
     font-family: 'Nunito', sans-serif;
     border-radius: 5px;
 }
