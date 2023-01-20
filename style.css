@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+body {
+    overflow-x: hidden;
+    padding: 0;
+    text-align: center;
+
+    background-image: url(index.svg);
+    background-size: cover;
+    background-attachment:fixed ;
+
+}
+
+.row {
+  height: 100vh;
+}
+
+
+
+.card {
+  background-color: rgba(240, 248, 255, 0.62);
+  width: 50rem;
+  height: auto;
+  padding: 0;
+
+  border-radius: 5px;
+  margin: 0 auto;
+  margin-top: 5rem;
+  margin-bottom: 5rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.card-header {
+  border: 0;
+  background-color: rgba(240, 248, 255, 0);
+  font-family: 'Nunito', sans-serif;
+}
+
+select#month, select#year, input {
+    width : 130px !important; 
+    margin: 1rem;
+    height: 35px;
+    background-color: rgba(240, 248, 255, 0.625);
+
+    border: 10px;
+
+    font-weight: bolder;
+    font-size: large;
+    font-family: 'Nunito', sans-serif;
+    border-radius: 5px;
+}
+
+
+.card-body {
+  padding : 0,5rem;
+  padding-top: 0; 
+
+}
+
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    
+
+  }
+  
+  th, td {
+    /* border: 1px solid rgba(255, 255, 255, 0.825); */
+    color: gray;
+    font-size: large;
+    font-weight: bold;
+    font-family: 'Nunito', sans-serif;
+    height: 4rem;
+    width: 5rem;
+
+  }
+  
+  .publicholiday {
+    background-image: url(https://img.icons8.com/color/48/null/filled-star--v2.png);
+    background-position: center;
+    background-repeat: no-repeat;
+
+    color: rgb(154, 62, 240);
+    font-weight: bolder;
+
+  }
+
+  .birthday {
+    background-image: url(https://img.icons8.com/pastel-glyph/48/EABAF6/hearts--v1.png);
+    background-position: center;
+    background-repeat: no-repeat;
+   
+    color: rgb(246, 36, 193);
+    font-weight: bolder;
+
+  }
+  .appointment {
+    background-image: url(https://img.icons8.com/pastel-glyph/45/33D4F0/calendar.png);
+    background-position: center;
+    background-repeat: no-repeat;
+   
+    color: #33d4f0;
+    font-weight: bolder;
+
+  }
+ 
+td button {
+  padding: 0 !important;
+  border : 0 !important;
+}
+
+thead th {
+  color: #33d4f0;
+  font-size: larger;
+}
+
+div.d-flex {
+  height: 1rem;
+  margin-right: 1.5rem;
+}
+
+.modal-backdrop {
+  position : relative !important; 
+}
