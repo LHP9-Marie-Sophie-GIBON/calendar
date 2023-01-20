@@ -25,7 +25,6 @@ require('calendar.php');
                 <form action="" method="post">
 
                     <!-- Options pour tous les mois -->
-
                     <select name="month" id="month" class="btn btn-outline-info fw-bolder">
                         <option value="default" selected disabled>
                             <!-- afficher le mois sélectionner ou le mois courant -->
@@ -56,7 +55,6 @@ require('calendar.php');
                         <option value="11">Novembre</option>
                         <option value="12">Décembre</option>
                     </select>
-
 
                     <!-- Options pour toutes les années -->
                     <select name="year" id="year" class="btn btn-outline-info fw-bolder">

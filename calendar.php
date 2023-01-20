@@ -71,6 +71,7 @@ function showCalendar($month, $year)
     ];
 
     $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+
     echo '
     <table>
         <thead>
@@ -130,6 +131,7 @@ function showCalendar($month, $year)
             echo '<button class="btn" data-bs-toggle="modal" data-bs-target="#' . $appointmentsInMonths[$i]['name'] . '"><img src="https://img.icons8.com/tiny-color/16/null/calendar-plus.png"/></button>';
             showAppointment($appointmentsInMonths[$i]['name'], $appointmentsInMonths[$i]['hour'], $appointmentsInMonths[$i]['location']);
         }
+        
         echo '</div></div>' . $i . '</td>';
 
         // creation de cellules vides après le dernier du mois
@@ -148,9 +150,6 @@ function showCalendar($month, $year)
 
 
 
-
-
-// fonction affichant $birthdays $appointment['name'] et ['date'] dans une modal au click de l'icone
 function showBirthdays($name)
 {
     echo '<div class="modal fade" id="' . $name . '" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -170,10 +169,6 @@ function showBirthdays($name)
 
 
 
-
-
-
-// fonction affichant $appointments$appointment['name'] et ['date'] dans une modal au click de l'icone
 function showAppointment($name, $hour, $location)
 {
     echo '<div class="modal fade" id="' . $name . '" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -184,7 +179,7 @@ function showAppointment($name, $hour, $location)
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <p>Vous avez un rendez vous aujourd\'hui : ' . $name . '</p>
+                        <p>Vous avez un rendez vous aujourd\'hui : ' . $name .'</p>
                         <p>Heure : ' . $hour . '</p>
                         <p>Lieu : ' . $location . '</p>
                     </div>
