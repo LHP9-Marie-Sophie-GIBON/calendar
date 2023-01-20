@@ -102,7 +102,7 @@ function showCalendar($month, $year)
 
         // afficher le jour courant
         if (date('d-M-Y', mktime(0, 0, 0, $month, $i, $year)) == date('d-M-Y')) {
-            echo 'fw-bold text-info';
+            echo 'fw-bold text-info bounce';
         }
         // afficher les jours fériés
         if (array_key_exists(mktime(0, 0, 0, $month, $i, $year), $publicholidays)) {
