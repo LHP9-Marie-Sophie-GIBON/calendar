@@ -2,10 +2,10 @@
 
 function showCalendar($month, $year)
 {
-    // récupérer les données du json holidays
+    // JSON HOLIDAYS
     $holidays = file_get_contents('data/holidays.json');
     $holidays = json_decode($holidays, true);
-
+            // répérer les jours de vacances 
     $holidays_days = array();
     foreach ($holidays as $holiday) {
         $start = new DateTime($holiday['start']);
@@ -15,6 +15,7 @@ function showCalendar($month, $year)
             $start->modify('+1 day');
         }
     }
+            // créer un tableau avec les jours de vacances du mois
     $holidaysInMonths = [];
     foreach ($holidays_days as $value){
         $hday = explode('-', $value);
@@ -24,10 +25,10 @@ function showCalendar($month, $year)
     }
 
 
-    // récupérer les données du json birthdays 
+    // JSON BIRTHDAYS 
     $birthdays = file_get_contents('data/birthday.json');
     $birthdays = json_decode($birthdays, true);
-
+            // créer un tableau avec les anniversaires du mois
     $birthdaysInMonths = [];
     foreach ($birthdays as $birthday) {
         $bday = explode('-', $birthday['date']);
@@ -37,10 +38,10 @@ function showCalendar($month, $year)
         }
     };
 
-    // récupérer less données du json appointment
+    // JSON APPOINTMENTS
     $appointments = file_get_contents('data/appointment.json');
     $appointments = json_decode($appointments, true);
-
+            // créer un tableau avec les rendez-vous du mois
     $appointmentsInMonths = [];
     foreach ($appointments as $appointment) {
         $aday = explode('-', $appointment["date"]);
@@ -55,7 +56,7 @@ function showCalendar($month, $year)
     };
 
 
-    // tableau des jours fériés
+    // Tableau des jours fériés
     $publicholidays = [
         mktime(0, 0, 0, 1, 1, $year) => 'Jour de l\'an',
         strtotime('+1 day', easter_date($year)) => 'Lundi de Pâques',
@@ -70,8 +71,7 @@ function showCalendar($month, $year)
         mktime(0, 0, 0, 11, 11, $year) => 'Jour de Noël',
     ];
 
-    $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-
+    // Création de la base du tableau
     echo '
     <table>
         <thead>
@@ -87,54 +87,59 @@ function showCalendar($month, $year)
         </thead>
         <tbody>
     ';
-    // boucle pour parcourir les jrs du mois + fonction date() pour déterminer le jr de la semaine 
+
+
+    // Boucle pour parcourir les jrs du mois + fonction date() pour déterminer le jr de la semaine 
+    $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
     for ($i = 1; $i <= $daysInMonth; $i++) {
         $dayOfWeek = date('N', mktime(0, 0, 0, $month, $i, $year));
 
-        // creation de cellules vides avant le 1er du mois
+
+        // Creation de cellules vides avant le 1er du mois
         if ($i == 1) {
             echo '<tr>';
             for ($j = 1; $j < $dayOfWeek; $j++) {
                 echo '<td class="vide"></td>';
             }
         }
-        // afficher les jrs du mois
-        echo '<td class="';
+            // Affichage des jrs du mois
+            echo '<td class="';
 
-        // afficher le jour courant
-        if (date('d-M-Y', mktime(0, 0, 0, $month, $i, $year)) == date('d-M-Y')) {
-            echo 'fw-bold text-info bounce';
-        }
-        // afficher les jours fériés
-        if (array_key_exists(mktime(0, 0, 0, $month, $i, $year), $publicholidays)) {
-            echo 'publicholiday';
-        }
+            // Mise en valeur du jour courant
+            if (date('d-M-Y', mktime(0, 0, 0, $month, $i, $year)) == date('d-M-Y')) {
+                echo 'fw-bold text-info bounce';
+            }
+            // Mise en valeur des jours fériés
+            if (array_key_exists(mktime(0, 0, 0, $month, $i, $year), $publicholidays)) {
+                echo 'publicholiday';
+            }
 
-        echo '"><div class="d-flex justify-content-end ';
+            echo '"><div class="d-flex justify-content-end ';
 
-        // afficher les vacances
-        if (array_key_exists($i, $holidaysInMonths)) {
-            echo 'vacances';
-        }
+            // Mise en valeur des jours de vacances
+            if (array_key_exists($i, $holidaysInMonths)) {
+                echo 'vacances';
+            }
 
-        echo '"><div class="buttonsGroup"> ';
+            echo '"><div class="buttonsGroup"> ';
 
-        // afficher les anniversaire
-        if (array_key_exists($i, $birthdaysInMonths)) {
-            echo '<button class="btn" data-bs-toggle="modal" data-bs-target="#' . $birthdaysInMonths[$i] . '"><img src="https://img.icons8.com/tiny-color/16/null/packaging.png"/></button>';
-            showBirthdays($birthdaysInMonths[$i]);
-        }
-
-
-        // afficher les rendez-vous
-        if (array_key_exists($i, $appointmentsInMonths)) {
-            echo '<button class="btn" data-bs-toggle="modal" data-bs-target="#' . $appointmentsInMonths[$i]['name'] . '"><img src="https://img.icons8.com/tiny-color/16/null/calendar-plus.png"/></button>';
-            showAppointment($appointmentsInMonths[$i]['name'], $appointmentsInMonths[$i]['hour'], $appointmentsInMonths[$i]['location']);
-        }
+            // Affichage des icônes d'anniversaire
+            if (array_key_exists($i, $birthdaysInMonths)) {
+                echo '<button class="btn" data-bs-toggle="modal" data-bs-target="#' . $birthdaysInMonths[$i] . '"><img src="https://img.icons8.com/tiny-color/16/null/packaging.png"/></button>';
+                // Fonction affichant la modal 
+                showBirthdays($birthdaysInMonths[$i]);
+            }
+            // Affichage des icônes de rendez-vous
+            if (array_key_exists($i, $appointmentsInMonths)) {
+                echo '<button class="btn" data-bs-toggle="modal" data-bs-target="#' . $appointmentsInMonths[$i]['name'] . '"><img src="https://img.icons8.com/tiny-color/16/null/calendar-plus.png"/></button>';
+                // Fonction affichant la modal
+                showAppointment($appointmentsInMonths[$i]['name'], $appointmentsInMonths[$i]['hour'], $appointmentsInMonths[$i]['location']);
+            }
         
+        // Affichage des jrs du mois
         echo '</div></div>' . $i . '</td>';
 
-        // creation de cellules vides après le dernier du mois
+        // Création de cellules vides après le dernier du mois
         if ($dayOfWeek == 7) {
             echo '</tr>';
         } else if ($i == $daysInMonth) {
